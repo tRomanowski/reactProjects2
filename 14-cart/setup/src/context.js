@@ -24,12 +24,31 @@ const AppProvider = ({ children }) => {
     dispatch({ type: 'REMOVE', payload: id });
   };
 
-  const increase = (id) => {
-    dispatch({ type: 'INCREASE', payload: id });
+  // const increase = (id) => {
+  //   dispatch({ type: 'INCREASE', payload: id });
+  // };
+  // const decrease = (id) => {
+  //   dispatch({ type: 'DECREASE', payload: id });
+  // };
+
+  const changeAmount = (id, value) => {
+    dispatch({ type: 'CHANGE_AMOUNT', payload: { id, value } });
   };
-  const decrease = (id) => {
-    dispatch({ type: 'DECREASE', payload: id });
+
+  const fetchData = async () => {
+    dispatch({ type: 'LOADING' });
+    const response = await fetch(url);
+    const data = await response.json();
+    dispatch({ type: 'DISPLAY_ITEMS', payload: data });
   };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    dispatch({ type: 'GET_TOTALS' });
+  }, [state.cart]);
 
   return (
     <AppContext.Provider
@@ -37,8 +56,7 @@ const AppProvider = ({ children }) => {
         ...state,
         clearCart,
         remove,
-        increase,
-        decrease,
+        changeAmount,
       }}
     >
       {children}
