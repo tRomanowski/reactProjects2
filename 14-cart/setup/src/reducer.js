@@ -75,7 +75,7 @@ const reducer = (state, action) => {
   if (action.type === 'DISPLAY_ITEMS') {
     return { ...state, cart: action.payload, loading: false };
   }
-  return state;
+  throw new Error('no mathing action type');
 };
 
 export default reducer;
