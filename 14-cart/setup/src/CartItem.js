@@ -1,6 +1,7 @@
-import React from 'react'
-import { useGlobalContext } from './context'
+import React from 'react';
+import { useGlobalContext } from './context';
 const CartItem = ({ id, img, title, price, amount }) => {
+  const { remove } = useGlobalContext();
   return (
     <article className='cart-item'>
       <img src={img} alt={title} />
@@ -8,10 +9,7 @@ const CartItem = ({ id, img, title, price, amount }) => {
         <h4>{title}</h4>
         <h4 className='item-price'>${price}</h4>
         {/* remove button */}
-        <button
-          className='remove-btn'
-          onClick={() => console.log('remove item')}
-        >
+        <button className='remove-btn' onClick={() => remove(id)}>
           remove
         </button>
       </div>
@@ -32,7 +30,7 @@ const CartItem = ({ id, img, title, price, amount }) => {
         </button>
       </div>
     </article>
-  )
-}
+  );
+};
 
-export default CartItem
+export default CartItem;
