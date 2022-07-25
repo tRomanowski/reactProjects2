@@ -14,12 +14,15 @@ const Photo = ({
     <article className='photo'>
       <img src={regular} alt={alt_description} />
       <div className='photo-info'>
-        <h4>{name}</h4>
-        <p>{likes} likes</p>
+        <div>
+          <h4>{name}</h4>
+
+          <p>{likes} likes</p>
+        </div>
+        <a href={portfolio_url}>
+          <img src={medium} alt={name} className='user-img' />
+        </a>
       </div>
-      <a href={portfolio_url}>
-        <img src={medium} alt={name} className='user-img' />
-      </a>
     </article>
   );
 };

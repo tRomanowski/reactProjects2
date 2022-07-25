@@ -8,14 +8,34 @@ const searchUrl = `https://api.unsplash.com/search/photos/`;
 function App() {
   const [loading, setLoading] = useState(false);
   const [photos, setPhotos] = useState([]);
+  const [page, setPage] = useState(0);
+  const [query, setQuery] = useState('');
 
   const fetchImages = async () => {
     setLoading(true);
-    let url = `${mainUrl}${clientID}`;
+    const urlPage = `&page=${page}`;
+    const urlQuery = `&query=${query}`;
+    let url;
+
+    if (query) {
+      url = `${searchUrl}${clientID}${urlPage}${urlQuery}`;
+    } else {
+      url = `${mainUrl}${clientID}${urlPage}`;
+    }
+
     try {
       const res = await fetch(url);
       const data = await res.json();
-      setPhotos(data);
+      setPhotos((oldPhotos) => {
+        if (query && page === 1) {
+          return data.results;
+        } else if (query) {
+          return [...oldPhotos, ...data.results];
+        } else {
+          return [...oldPhotos, ...data];
+        }
+      });
+      console.log(data);
       setLoading(false);
     } catch (error) {
       setLoading(false);
@@ -24,18 +44,38 @@ function App() {
   };
   useEffect(() => {
     fetchImages();
+  }, [page]);
+
+  useEffect(() => {
+    const event = window.addEventListener('scroll', () => {
+      if (
+        !loading &&
+        window.innerHeight + window.scrollY >= document.body.scrollHeight - 2
+      ) {
+        setPage((oldPage) => {
+          return oldPage + 1;
+        });
+      }
+    });
+    return () => window.removeEventListener('scroll', event);
   }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log('hello');
+    setPage(1);
   };
 
   return (
     <main>
       <section className='search'>
         <form className='search-form' onSubmit={handleSubmit}>
-          <input type='text' placeholder='search' className='form-input' />
+          <input
+            type='text'
+            placeholder='search'
+            className='form-input'
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+          />
           <button className='submit-btn' type='submit'>
             <FaSearch />
           </button>
