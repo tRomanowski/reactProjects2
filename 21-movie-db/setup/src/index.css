@@ -279,3 +279,17 @@ Single Movie
   text-align: center;
   padding: 2rem;
 }
+form label {
+  letter-spacing: var(--spacing);
+  text-transform: capitalize;
+  line-height: 1.25;
+  margin-bottom: 0.75rem;
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+@media screen and (min-width: 800px) {
+  form label {
+    font-size: 2.5rem;
+  }
+}
